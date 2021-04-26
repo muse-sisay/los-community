@@ -1,16 +1,8 @@
 # Living Open Source Africa Community
 
-<br>
-<p align="center">As a way of fostering Open Source adoption in Africa, the Living Open Source Community is working towards building a unified platform for sharing resources and providing remote online training and events.</p>
-<br>
+As a way of fostering Open Source adoption in Africa, the Living Open Source Community is working towards building a unified platform for sharing resources and providing remote online training and events.
 
-### TABLE OF CONTENTS
-
-- [Requirements](#requirements)
-- [Setup](#setup)
-- [License](#license)
-
-## REQUIREMENTS
+# REQUIREMENTS
 
 * PHP 7.x.x
 
@@ -18,7 +10,7 @@
 
 Modules (cli, curl, mbstring, pdo, mysql, gd, zip, xml, json,bcmath, ctype, dom, xml, openssl, tokenizer, zip)
 
-* MySQL/MariaDB
+* MySQL/MariaBD
 
 * Composer
 
@@ -26,62 +18,53 @@ Modules (cli, curl, mbstring, pdo, mysql, gd, zip, xml, json,bcmath, ctype, dom,
 
 * Git
 
-To install `NodeJs`,`Git` and `MariaDB`, run the following 
+# SETUP
+
+Start by cloning this repository to your local machine
 
 ```bash
-$ sudo apt install mariadb-server nodejs git -y
+git clone https://github.com/living-opensource-zambia/los-community.git
 ```
 
-## SETUP
-
-Start by cloning this repository on your local machine
+Then change directory into the repository.
 
 ```bash
-$ cd ~/my_projects_folder
-$ git clone https://github.com/living-opensource-zambia/los-community.git
+cd los-community
 ```
 
-Change into the repository.
-
-```bash
-$ cd los-community
-```
-
-At this stage, you should have `composer` installed, if you do not have `composer`.
+At this stage, you should already have installed composer, if you do not have composer.
 Do the following:
 
 ```bash
-$ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-$ sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-$ php -r "unlink('composer-setup.php');"
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+php -r "unlink('composer-setup.php');"
 ```
 
-Inside of the los-community directory, install laravel dependencies by typing:
+Inside of the los-community directory, install laravel dependenciesby typing:
 
 ```bash
-$ composer install
+composer install
 ```
 
-After installation of all dependenies, then copy `.env.example` file into `.env`, e.g:
+After installation of all dependenies, then copy the .env.example into .env, e.g:
 
 ```bash
-$ cp .env.example .env
+cp .env.example .env
 ```
 
 Then generate a laravel key by typing:
 
 ```bash
-$ php artisan key:generate
+php artisan key:generate
 ```
 
-Then create an empty database and give it a name. For this example we have used `los_community` as our database name:
+Then create an empty database and give it a name, e.g los_community:
 
 ```bash
-$ mysql -u username -p
-....
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql -u username -p
 
-mysql> CREATE DATABASE los_community;
+CREATE DATABASE los_community;
 ```
 
 After creating the database, setup laravel to access your database from the [.env file](.env) by setting up the following parameters.
@@ -106,16 +89,48 @@ DEFAULT_PASSWORD="loss-community@home"
 
 The above parameters are used in generating seeds in [UserDataSeeder.php](database/seeds/UserDataSeeder.php).
 
+```php
+    public function run()
+    {
+         // Create a faker instance
+         $faker = Faker\Factory::create();
+
+         \App\User::create([
+             'name' => $faker->name,
+             'email' => env('ADMIN_EMAIL'),
+             'user_type' => 1,
+             'email_verified_at' => \Carbon\Carbon::now(),
+             'password' => Hash::make(env('DEFAULT_PASSWORD'))
+         ]);
+ 
+         \App\User::create([
+             'name' => $faker->name,
+             'email' => env('MEMBER_EMAIL'),
+             'user_type' => 2,
+             'email_verified_at' => \Carbon\Carbon::now(),
+             'password' => Hash::make(env('DEFAULT_PASSWORD'))
+         ]);
+ 
+         \App\User::create([
+             'name' => $faker->name,
+             'email' => env('STUDENT_EMAIL'),
+             'user_type' => 3,
+             'email_verified_at' => \Carbon\Carbon::now(),
+             'password' => Hash::make(env('DEFAULT_PASSWORD'))
+         ]);
+    }
+```
+
 To populate your database, run the migrations with the seed option:
 
 ```bash
-$ php artisan migrate:fresh --seed
+php artisan migrate:fresh --seed
 ```
 
 Install the node dependencies, with the following command:
 
 ```bash
-$ npm install
+npm install
 ```
 
 After that is done, you are ready to roll.
@@ -124,21 +139,21 @@ Run the two development servers, i.e laravel & npm by typing:
 
 *Not* Run these in separate terminals 
 
-Terminal 1:
+terminal 1:
 
 ```bash
-$ npm run watch
+npm run watch
 ```
 
 Terminal 2:
 
 ```bash
-$ php artisan serve
+php artisan serve
 ```
 
 You are all set now :joy:
 
-## LICENSE
+# LICENSE
 
-This project is ditributed under the MIT Open Source Licence, as documented [here](LICENSE).
+This project is ditributed under the MIT Open Source Licence, as documented [here](LICENSE)
 
